@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALUR KERJA TIM DIGITALISASI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #ffffff;
+            color: #333;
+            padding: 20px;
+            line-height: 1.4;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #333;
+        }
+        
+        .title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* Basic Shapes */
+        .step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            border: 2px solid #333;
+            background: #ffffff;
+            padding: 12px 16px;
+            width: 320px;
+            min-height: 55px;
+            line-height: 1.3;
+        }
+        
+        /* Terminal - Start/End */
+        .terminal {
+            border-radius: 30px;
+            background: #f0f0f0;
+            font-weight: bold;
+        }
+        
+        /* Process - Rectangle */
+        .process {
+            border-radius: 4px;
+            background: #ffffff;
+        }
+        
+        /* Decision - Diamond */
+        .decision {
+            width: 120px;
+            height: 120px;
+            transform: rotate(45deg);
+            margin: 20px 0;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .decision-text {
+            transform: rotate(-45deg);
+            line-height: 1.2;
+        }
+        
+        /* Arrows */
+        .arrow {
+            width: 2px;
+            height: 20px;
+            background: #333;
+            position: relative;
+            margin: 8px 0;
+        }
+        
+        .arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: -4px;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 8px solid #333;
+        }
+        
+        /* Decision Flow */
+        .decision-flow {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .branch-label {
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 12px;
+            background: #f0f0f0;
+            border: 1px solid #333;
+        }
+        
+        .yes { background: #e8f5e8; }
+        .no { background: #ffe8e8; }
+        
+        .horizontal-arrow {
+            width: 70px;
+            height: 2px;
+            background: #333;
+            position: relative;
+        }
+        
+        .horizontal-arrow::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: -3px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid #333;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+        }
+        
+        /* Section Headers */
+        .section {
+            width: 100%;
+            text-align: center;
+            margin: 25px 0 15px 0;
+            position: relative;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #ddd;
+            z-index: 1;
+        }
+        
+        .section-title {
+            display: inline-block;
+            background: white;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Role Labels */
+        .role-label {
+            background: #f8f8f8;
+            border: 1px solid #ccc;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        
+        .senior-aps { background: #e3f2fd; border-color: #2196f3; color: #1976d2; }
+        .facilitator { background: #f3e5f5; border-color: #9c27b0; color: #7b1fa2; }
+        .aps { background: #e8f5e8; border-color: #4caf50; color: #388e3c; }
+        .pjlp { background: #fff3e0; border-color: #ff9800; color: #f57c00; }
+        
+        /* Step Numbers */
+        .step-number {
+            position: absolute;
+            top: -8px;
+            left: 8px;
+            background: #333;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .numbered {
+            position: relative;
+        }
+        
+        /* Feedback Arrow */
+        .feedback-arrow {
+            width: 120px;
+            height: 2px;
+            background: #333;
+            position: relative;
+            margin: 10px 0;
+        }
+        
+        .feedback-arrow::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: -3px;
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            border-right: 8px solid #333;
+        }
+        
+        .feedback-text {
+            font-size: 10px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        /* Legend */
+        .legend {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        
+        .legend h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .legend-shape {
+            flex-shrink: 0;
+            border: 2px solid #333;
+        }
+        
+        .legend-oval {
+            width: 40px;
+            height: 20px;
+            border-radius: 10px;
+            background: #f0f0f0;
+        }
+        
+        .legend-rect {
+            width: 40px;
+            height: 20px;
+            background: #ffffff;
+        }
+        
+        .legend-diamond {
+            width: 20px;
+            height: 20px;
+            transform: rotate(45deg);
+            background: #ffffff;
+        }
+        
+        .legend-arrow {
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 12px solid #333;
+            border: none;
+        }
+        
+        .legend-text {
+            font-size: 13px;
+            color: #333;
+        }
+        
+        .legend-text strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">ALUR KERJA TIM DIGITALISASI</div>
+            <div class="subtitle">Alur Proses Multi-Peran Terintegrasi</div>
+			<div class="subtitle">(SAPS, Facilitator, APS, PJLP GIS)</div>
+        </div>
+        
+        <div class="flowchart">
+            <!-- START -->
+            <div class="step terminal">START</div>
+            <div class="arrow"></div>
+            
+            <!-- SECTION 1: ARCHIVE RETRIEVAL -->
+            <div class="section">
+                <div class="section-title">FASE PENGAMBILAN ARSIP</div>
+            </div>
+            
+            <!-- Step 1 -->
+            <div class="role-label senior-aps">Senior APS & APS</div>
+            <div class="step process numbered">
+                <div class="step-number">1</div>
+                Menerima Informasi Nomor IMB		
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 2 -->
+            <div class="step process numbered">
+                <div class="step-number">2</div>
+                Mencari Alamat Penyimpanan Pada Depo Arsip
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 3 -->
+            <div class="step process numbered">
+                <div class="step-number">3</div>
+                Mengambil Arsip di Depo Arsip
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- SECTION 2: FACILITATOR PROCESSING -->
+            <div class="section">
+                <div class="section-title">FASE PEMINDAIAN & PEMROSESAN</div>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="role-label facilitator">Facilitator</div>
+            <div class="step process numbered">
+                <div class="step-number">4</div>
+                Menerima Fisik Arsip
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 5 -->
+            <div class="step process numbered">
+                <div class="step-number">5</div>
+                Merapihkan Arsip Sebelum Melakukan Scan
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 6 -->
+            <div class="step process numbered">
+                <div class="step-number">6</div>
+                Membuat Folder: 5-Digit Angka (Contoh: 00234 IMB) + Jenis Arsip<br>(Contoh: IMB/SLF/IPB dsb)
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 7 -->
+            <div class="step process numbered">
+                <div class="step-number">7</div>
+                Melakukan Scanning
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 8 -->
+            <div class="step process numbered">
+                <div class="step-number">8</div>
+                Memisahkan File:<br>SK, KRK, Dokumen Kelengkapan → Dokumen Dinas<br>Arsitektur, Struktur, MEP → Dokumen Gambar
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 9 -->
+            <div class="step process numbered">
+                <div class="step-number">9</div>
+                Me-rename folder induk dengan (R)<br>Merapihkan Kembali Arsip Seperti Semula
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- SECTION 3: APS QUALITY CONTROL -->
+            <div class="section">
+                <div class="section-title">FASE PENGENDALIAN KUALITAS & PEMASUKAN DATA</div>
+            </div>
+            
+            <!-- Step 10 -->
+            <div class="role-label aps">APS</div>
+            <div class="step process numbered">
+                <div class="step-number">10</div>
+                Melakukan Pengendalian Kontrol Hasil Scan<br>(Cropping, Rotate, Rename)
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Decision: QC OK? -->
+            <div class="step decision">
+                <div class="decision-text">QC<br>Lulus?</div>
+            </div>
+            
+            <div class="decision-flow">
+                <div class="branch">
+                    <div class="branch-label no">TIDAK</div>
+                    <div class="feedback-arrow"></div>
+                    <div class="feedback-text">Kembali ke Step 10</div>
+                </div>
+                <div class="branch">
+                    <div class="branch-label yes">YA</div>
+                    <div class="horizontal-arrow"></div>
+                </div>
+            </div>
+            
+            <!-- Step 11 -->
+            <div class="step process numbered">
+                <div class="step-number">11</div>
+                File Dimasukan ke OneBox Online
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 12 -->
+            <div class="step process numbered">
+                <div class="step-number">12</div>
+                Memasukan Data ke Dalam Web SIKAT
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 13 -->
+            <div class="step process numbered">
+                <div class="step-number">13</div>
+                Mencari Titik Koordinat Sesuai Dengan KRK<br>Menginput Kolom Sesuai Data Arsip IMB tsb.
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 14 -->
+            <div class="step process numbered">
+                <div class="step-number">14</div>
+                Mengupload File ke Dalam Web SIKAT dan Me-rename folder dengan (W)
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- SECTION 4: GIS PROCESSING -->
+            <div class="section">
+                <div class="section-title">FASE MAPPING GIS</div>
+            </div>
+            
+            <!-- Step 15 -->
+            <div class="role-label pjlp">PJLP GIS</div>
+            <div class="step process numbered">
+                <div class="step-number">15</div>
+                Melakukan Plotting Pada Aplikasi ArcGis
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 16 -->
+            <div class="step process numbered">
+                <div class="step-number">16</div>
+                Me-rename Folder Dengan (P)
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- SECTION 5: VALIDATION -->
+            <div class="section">
+                <div class="section-title">FASE VALIDASI</div>
+            </div>
+            
+            <!-- Step 17 -->
+            <div class="role-label senior-aps">Senior APS</div>
+            <div class="step process numbered">
+                <div class="step-number">17</div>
+                Memvalidasi Terhadap Hasil Input Web SIKAT
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Step 18 -->
+            <div class="step process numbered">
+                <div class="step-number">18</div>
+                Verifikasi: Arsip Scanned, OneBox Uploaded,<br>Web SIKAT Input Complete.
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- Decision: Validation OK? -->
+            <div class="step decision">
+                <div class="decision-text">Validasi<br>Benar?</div>
+            </div>
+            
+            <div class="decision-flow">
+                <div class="branch">
+                    <div class="branch-label no">TIDAK</div>
+                    <div class="feedback-arrow"></div>
+                    <div class="feedback-text">Kembali ke Step 12</div>
+                </div>
+                <div class="branch">
+                    <div class="branch-label yes">YA</div>
+                    <div class="horizontal-arrow"></div>
+                </div>
+            </div>
+            
+            <!-- SECTION 6: FINAL STORAGE -->
+            <div class="section">
+                <div class="section-title">FASE PENGEMBALIAN ARSIP</div>
+            </div>
+            
+            <!-- Step 19 -->
+            <div class="role-label">Senior APS, APS, Facilitator</div>
+            <div class="step process numbered">
+                <div class="step-number">19</div>
+                Mengembalikan Arsip ke Dalam Depo Penyimpanan
+            </div>
+            <div class="arrow"></div>
+            
+            <!-- END -->
+            <div class="step terminal">Proses Selesai</div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="legend">
+            <h3>Flowchart Symbols & Role Definitions</h3>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <div class="legend-shape legend-oval"></div>
+                    <div class="legend-text">
+                        <strong>Terminal</strong>
+                        Start/End Point
+                    </div>
+                </div>
+                
+                <div class="legend-item">
+                    <div class="legend-shape legend-rect"></div>
+                    <div class="legend-text">
+                        <strong>Process</strong>
+                        Action Step
+                    </div>
+                </div>
+                
+                <div class="legend-item">
+                    <div class="legend-shape legend-diamond"></div>
+                    <div class="legend-text">
+                        <strong>Decision</strong>
+                        Quality Check Point
+                    </div>
+                </div>
+                
+                <div class="legend-item">
+                    <div class="role-label senior-aps">Senior APS & APS</div>
+                    <div class="legend-text">
+                        Archive Retrieval & Validation
+                    </div>
+                </div>
+                
+                <div class="legend-item">
+                    <div class="role-label facilitator">Facilitator</div>
+                    <div class="legend-text">
+                        Scanning & File Organization
+                    </div>
+                </div>
+                
+                <div class="legend-item">
+                    <div class="role-label aps">APS</div>
+                    <div class="legend-text">
+                        Quality Control & Data Entry
+                    </div>
+                </div>
+                
+                <div class="legend-item">
+                    <div class="role-label pjlp">PJLP GIS</div>
+                    <div class="legend-text">
+                        GIS Mapping & Plotting
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
