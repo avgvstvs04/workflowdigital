@@ -17,10 +17,11 @@
             color: #333;
             padding: 20px;
             line-height: 1.4;
+            overflow-x: auto;
         }
         
         .container {
-            max-width: 1000px;
+            min-width: 1400px;
             margin: 0 auto;
             background: white;
             padding: 30px;
@@ -49,9 +50,34 @@
         
         .flowchart {
             display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 40px;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+        
+        .phase-column {
+            display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
+            min-width: 280px;
+            flex-shrink: 0;
+        }
+        
+        .phase-header {
+            background: #f0f0f0;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 20px;
         }
         
         /* Basic Shapes */
@@ -66,7 +92,7 @@
             border: 2px solid #333;
             background: #ffffff;
             padding: 12px 16px;
-            width: 320px;
+            width: 280px;
             min-height: 55px;
             line-height: 1.3;
         }
@@ -92,6 +118,7 @@
             margin: 20px 0;
             font-size: 11px;
             font-weight: bold;
+            position: relative;
         }
         
         .decision-text {
@@ -120,20 +147,57 @@
             border-top: 8px solid #333;
         }
         
+        /* Horizontal Arrows Between Phases */
+        .phase-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            margin-top: 100px;
+        }
+        
+        .horizontal-arrow {
+            width: 40px;
+            height: 8px;
+            background: #333;
+            position: relative;
+        }
+        
+        .horizontal-arrow::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-left: 16px solid #333;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+        
         /* Decision Flow */
         .decision-flow {
             display: flex;
-            justify-content: center;
-            gap: 100px;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
             width: 100%;
             margin: 20px 0;
+        }
+        
+        .decision-branches {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 20px;
         }
         
         .branch {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
+            flex: 1;
         }
         
         .branch-label {
@@ -148,55 +212,6 @@
         .yes { background: #e8f5e8; }
         .no { background: #ffe8e8; }
         
-        .horizontal-arrow {
-            width: 70px;
-            height: 2px;
-            background: #333;
-            position: relative;
-        }
-        
-        .horizontal-arrow::after {
-            content: '';
-            position: absolute;
-            right: -6px;
-            top: -3px;
-            width: 0;
-            height: 0;
-            border-left: 8px solid #333;
-            border-top: 4px solid transparent;
-            border-bottom: 4px solid transparent;
-        }
-        
-        /* Section Headers */
-        .section {
-            width: 100%;
-            text-align: center;
-            margin: 25px 0 15px 0;
-            position: relative;
-        }
-        
-        .section::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: #ddd;
-            z-index: 1;
-        }
-        
-        .section-title {
-            display: inline-block;
-            background: white;
-            padding: 0 20px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #666;
-            position: relative;
-            z-index: 2;
-        }
-        
         /* Role Labels */
         .role-label {
             background: #f8f8f8;
@@ -207,12 +222,15 @@
             font-weight: bold;
             color: #555;
             margin-bottom: 8px;
+            text-align: center;
+            width: fit-content;
         }
         
         .senior-aps { background: #e3f2fd; border-color: #2196f3; color: #1976d2; }
         .facilitator { background: #f3e5f5; border-color: #9c27b0; color: #7b1fa2; }
         .aps { background: #e8f5e8; border-color: #4caf50; color: #388e3c; }
         .pjlp { background: #fff3e0; border-color: #ff9800; color: #f57c00; }
+        .validator { background: #d4faf4; border-color: #59c2b2; color: #59c2b2; }
         
         /* Step Numbers */
         .step-number {
@@ -237,11 +255,11 @@
         
         /* Feedback Arrow */
         .feedback-arrow {
-            width: 120px;
+            width: 80px;
             height: 2px;
-            background: #333;
+            background: #e74c3c;
             position: relative;
-            margin: 10px 0;
+            margin: 5px 0;
         }
         
         .feedback-arrow::before {
@@ -253,13 +271,51 @@
             height: 0;
             border-top: 4px solid transparent;
             border-bottom: 4px solid transparent;
-            border-right: 8px solid #333;
+            border-right: 8px solid #e74c3c;
         }
         
         .feedback-text {
             font-size: 10px;
-            color: #666;
+            color: #e74c3c;
             margin-top: 4px;
+            font-weight: bold;
+        }
+        
+        /* Continue Arrow for Yes Branch */
+        .continue-arrow {
+            width: 80px;
+            height: 2px;
+            background: #27ae60;
+            position: relative;
+            margin: 5px 0;
+        }
+        
+        .continue-arrow::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: -3px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid #27ae60;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+        }
+        
+        .continue-text {
+            font-size: 10px;
+            color: #27ae60;
+            margin-top: 4px;
+            font-weight: bold;
+        }
+        
+        /* Start and End positions */
+        .start-column {
+            justify-content: center;
+        }
+        
+        .end-column {
+            justify-content: center;
         }
         
         /* Legend */
@@ -315,15 +371,6 @@
             background: #ffffff;
         }
         
-        .legend-arrow {
-            width: 0;
-            height: 0;
-            border-left: 4px solid transparent;
-            border-right: 4px solid transparent;
-            border-top: 12px solid #333;
-            border: none;
-        }
-        
         .legend-text {
             font-size: 13px;
             color: #333;
@@ -340,219 +387,241 @@
         <div class="header">
             <div class="title">ALUR KERJA TIM DIGITALISASI</div>
             <div class="subtitle">Alur Proses Multi-Peran Terintegrasi</div>
-			<div class="subtitle">(SAPS, Facilitator, APS, PJLP GIS)</div>
+            <div class="subtitle">(SAPS, Facilitator, APS, PJLP GIS)</div>
         </div>
         
         <div class="flowchart">
-            <!-- START -->
-            <div class="step terminal">START</div>
-            <div class="arrow"></div>
-            
-            <!-- SECTION 1: ARCHIVE RETRIEVAL -->
-            <div class="section">
-                <div class="section-title">FASE PENGAMBILAN ARSIP</div>
+            <!-- START COLUMN -->
+            <div class="phase-column start-column">
+                <div class="step terminal">START</div>
             </div>
             
-            <!-- Step 1 -->
-            <div class="role-label senior-aps">Senior APS & APS</div>
-            <div class="step process numbered">
-                <div class="step-number">1</div>
-                Menerima Informasi Nomor IMB		
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 2 -->
-            <div class="step process numbered">
-                <div class="step-number">2</div>
-                Mencari Alamat Penyimpanan Pada Depo Arsip
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 3 -->
-            <div class="step process numbered">
-                <div class="step-number">3</div>
-                Mengambil Arsip di Depo Arsip
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- SECTION 2: FACILITATOR PROCESSING -->
-            <div class="section">
-                <div class="section-title">FASE PEMINDAIAN & PEMROSESAN</div>
+            <!-- PHASE ARROW -->
+            <div class="phase-arrow">
+                <div class="horizontal-arrow"></div>
             </div>
             
-            <!-- Step 4 -->
-            <div class="role-label facilitator">Facilitator</div>
-            <div class="step process numbered">
-                <div class="step-number">4</div>
-                Menerima Fisik Arsip
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 5 -->
-            <div class="step process numbered">
-                <div class="step-number">5</div>
-                Merapihkan Arsip Sebelum Melakukan Scan
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 6 -->
-            <div class="step process numbered">
-                <div class="step-number">6</div>
-                Membuat Folder: 5-Digit Angka (Contoh: 00234 IMB) + Jenis Arsip<br>(Contoh: IMB/SLF/IPB dsb)
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 7 -->
-            <div class="step process numbered">
-                <div class="step-number">7</div>
-                Melakukan Scanning
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 8 -->
-            <div class="step process numbered">
-                <div class="step-number">8</div>
-                Memisahkan File:<br>SK, KRK, Dokumen Kelengkapan → Dokumen Dinas<br>Arsitektur, Struktur, MEP → Dokumen Gambar
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 9 -->
-            <div class="step process numbered">
-                <div class="step-number">9</div>
-                Me-rename folder induk dengan (R)<br>Merapihkan Kembali Arsip Seperti Semula
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- SECTION 3: APS QUALITY CONTROL -->
-            <div class="section">
-                <div class="section-title">FASE PENGENDALIAN KUALITAS & PEMASUKAN DATA</div>
-            </div>
-            
-            <!-- Step 10 -->
-            <div class="role-label aps">APS</div>
-            <div class="step process numbered">
-                <div class="step-number">10</div>
-                Melakukan Pengendalian Kontrol Hasil Scan<br>(Cropping, Rotate, Rename)
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Decision: QC OK? -->
-            <div class="step decision">
-                <div class="decision-text">QC<br>Lulus?</div>
-            </div>
-            
-            <div class="decision-flow">
-                <div class="branch">
-                    <div class="branch-label no">TIDAK</div>
-                    <div class="feedback-arrow"></div>
-                    <div class="feedback-text">Kembali ke Step 10</div>
+            <!-- PHASE 1: ARCHIVE RETRIEVAL -->
+            <div class="phase-column">
+                <div class="phase-header">FASE PENGAMBILAN ARSIP</div>
+                
+                <div class="role-label senior-aps">Senior APS & APS</div>
+                <div class="step process numbered">
+                    <div class="step-number">1</div>
+                    Menerima Informasi Nomor IMB
                 </div>
-                <div class="branch">
-                    <div class="branch-label yes">YA</div>
-                    <div class="horizontal-arrow"></div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">2</div>
+                    Mencari Alamat Penyimpanan Pada Depo Arsip
+                </div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">3</div>
+                    Mengambil Arsip di Depo Arsip
                 </div>
             </div>
             
-            <!-- Step 11 -->
-            <div class="step process numbered">
-                <div class="step-number">11</div>
-                File Dimasukan ke OneBox Online
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 12 -->
-            <div class="step process numbered">
-                <div class="step-number">12</div>
-                Memasukan Data ke Dalam Web SIKAT
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 13 -->
-            <div class="step process numbered">
-                <div class="step-number">13</div>
-                Mencari Titik Koordinat Sesuai Dengan KRK<br>Menginput Kolom Sesuai Data Arsip IMB tsb.
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 14 -->
-            <div class="step process numbered">
-                <div class="step-number">14</div>
-                Mengupload File ke Dalam Web SIKAT dan Me-rename folder dengan (W)
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- SECTION 4: GIS PROCESSING -->
-            <div class="section">
-                <div class="section-title">FASE MAPPING GIS</div>
+            <!-- PHASE ARROW -->
+            <div class="phase-arrow">
+                <div class="horizontal-arrow"></div>
             </div>
             
-            <!-- Step 15 -->
-            <div class="role-label pjlp">PJLP GIS</div>
-            <div class="step process numbered">
-                <div class="step-number">15</div>
-                Melakukan Plotting Pada Aplikasi ArcGis
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 16 -->
-            <div class="step process numbered">
-                <div class="step-number">16</div>
-                Me-rename Folder Dengan (P)
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- SECTION 5: VALIDATION -->
-            <div class="section">
-                <div class="section-title">FASE VALIDASI</div>
-            </div>
-            
-            <!-- Step 17 -->
-            <div class="role-label senior-aps">Senior APS</div>
-            <div class="step process numbered">
-                <div class="step-number">17</div>
-                Memvalidasi Terhadap Hasil Input Web SIKAT
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Step 18 -->
-            <div class="step process numbered">
-                <div class="step-number">18</div>
-                Verifikasi: Arsip Scanned, OneBox Uploaded,<br>Web SIKAT Input Complete.
-            </div>
-            <div class="arrow"></div>
-            
-            <!-- Decision: Validation OK? -->
-            <div class="step decision">
-                <div class="decision-text">Validasi<br>Benar?</div>
-            </div>
-            
-            <div class="decision-flow">
-                <div class="branch">
-                    <div class="branch-label no">TIDAK</div>
-                    <div class="feedback-arrow"></div>
-                    <div class="feedback-text">Kembali ke Step 12</div>
+            <!-- PHASE 2: FACILITATOR PROCESSING -->
+            <div class="phase-column">
+                <div class="phase-header">FASE PEMINDAIAN & PEMROSESAN</div>
+                
+                <div class="role-label facilitator">Facilitator</div>
+                <div class="step process numbered">
+                    <div class="step-number">4</div>
+                    Menerima Fisik Arsip
                 </div>
-                <div class="branch">
-                    <div class="branch-label yes">YA</div>
-                    <div class="horizontal-arrow"></div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">5</div>
+                    Merapihkan Arsip Sebelum Melakukan Scan
+                </div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">6</div>
+                    Membuat Folder: 5-Digit Angka (Contoh: 00234 IMB) + Jenis Arsip<br>(Contoh: IMB/SLF/IPB dsb)
+                </div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">7</div>
+                    Melakukan Scanning
+                </div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">8</div>
+                    Memisahkan File:<br>SK, KRK, Dokumen Kelengkapan → Dokumen Dinas<br>Arsitektur, Struktur, MEP → Dokumen Gambar
+                </div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">9</div>
+                    Me-rename folder induk dengan (R)<br>Merapihkan Kembali Arsip Seperti Semula
                 </div>
             </div>
             
-            <!-- SECTION 6: FINAL STORAGE -->
-            <div class="section">
-                <div class="section-title">FASE PENGEMBALIAN ARSIP</div>
+            <!-- PHASE ARROW -->
+            <div class="phase-arrow">
+                <div class="horizontal-arrow"></div>
             </div>
             
-            <!-- Step 19 -->
-            <div class="role-label">Senior APS, APS, Facilitator</div>
-            <div class="step process numbered">
-                <div class="step-number">19</div>
-                Mengembalikan Arsip ke Dalam Depo Penyimpanan
+            <!-- PHASE 3: GIS PROCESSING -->
+            <div class="phase-column">
+                <div class="phase-header">FASE MAPPING GIS</div>
+                
+                <div class="role-label pjlp">PJLP GIS</div>
+                <div class="step process numbered">
+                    <div class="step-number">10</div>
+                    Melakukan Plotting Pada Aplikasi ArcGis
+                </div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">11</div>
+                    Me-rename Folder Dengan (P)
+                </div>
             </div>
-            <div class="arrow"></div>
             
-            <!-- END -->
-            <div class="step terminal">Proses Selesai</div>
+            <!-- PHASE ARROW -->
+            <div class="phase-arrow">
+                <div class="horizontal-arrow"></div>
+            </div>
+            
+            <!-- PHASE 4: QUALITY CONTROL -->
+            <div class="phase-column">
+                <div class="phase-header">FASE PENGENDALIAN KUALITAS & PEMASUKAN DATA</div>
+                
+                <div class="role-label aps">APS</div>
+                <div class="step process numbered">
+                    <div class="step-number">12</div>
+                    Melakukan Pengendalian Kontrol Hasil Scan<br>(Cropping, Rotate, Rename)
+                </div>
+                <div class="arrow"></div>
+                
+                <!-- QC Decision -->
+                <div class="step decision">
+                    <div class="decision-text">QC<br>Lulus?</div>
+                </div>
+                
+                <div class="decision-flow">
+                    <div class="decision-branches">
+                        <div class="branch">
+                            <div class="branch-label no">TIDAK</div>
+                            <div class="feedback-arrow"></div>
+                            <div class="feedback-text">Kembali ke Step 7</div>
+                        </div>
+                        <div class="branch">
+                            <div class="branch-label yes">YA</div>
+                            <div class="continue-arrow"></div>
+                            <div class="continue-text">Lanjut</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">13</div>
+                    File Dimasukan ke OneBox Online
+                </div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">14</div>
+                    Memasukan Data ke Dalam Web SIKAT
+                </div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">15</div>
+                    Mencari Titik Koordinat Sesuai Dengan KRK<br>Menginput Kolom Sesuai Data Arsip IMB tsb.
+                </div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">16</div>
+                    Mengupload File ke Dalam Web SIKAT dan Me-rename folder dengan (W)
+                </div>
+            </div>
+            
+            <!-- PHASE ARROW -->
+            <div class="phase-arrow">
+                <div class="horizontal-arrow"></div>
+            </div>
+            
+            <!-- PHASE 5: VALIDATION -->
+            <div class="phase-column">
+                <div class="phase-header">FASE KONTROL</div>
+                
+                <div class="role-label senior-aps">Senior APS</div>
+                <div class="step process numbered">
+                    <div class="step-number">17</div>
+                    Melakukan Pengecekan Terhadap Hasil Input SIKAT
+                </div>
+                <div class="arrow"></div>
+                
+                <div class="step process numbered">
+                    <div class="step-number">18</div>
+                    Mengirim Hasil Input SIKAT ke Validator
+                </div>
+                <div class="arrow"></div>
+                
+                <!-- Validation Decision -->
+                <div class="role-label validator">Validator</div>
+                
+                <div class="step decision">
+                    <div class="decision-text">Validasi<br>Benar?</div>
+                </div>
+                
+                <div class="decision-flow">
+                    <div class="decision-branches">
+                        <div class="branch">
+                            <div class="branch-label no">TIDAK</div>
+                            <div class="feedback-arrow"></div>
+                            <div class="feedback-text">Kembali ke Step 12</div>
+                        </div>
+                        <div class="branch">
+                            <div class="branch-label yes">YA</div>
+                            <div class="continue-arrow"></div>
+                            <div class="continue-text">Lanjut</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PHASE ARROW -->
+            <div class="phase-arrow">
+                <div class="horizontal-arrow"></div>
+            </div>
+            
+            <!-- PHASE 6: FINAL STORAGE -->
+            <div class="phase-column">
+                <div class="phase-header">FASE PENGEMBALIAN ARSIP</div>
+                
+                <div class="role-label">Senior APS, APS, Facilitator</div>
+                <div class="step process numbered">
+                    <div class="step-number">19</div>
+                    Mengembalikan Arsip ke Dalam Depo Penyimpanan
+                </div>
+            </div>
+            
+            <!-- PHASE ARROW -->
+            <div class="phase-arrow">
+                <div class="horizontal-arrow"></div>
+            </div>
+            
+            <!-- END COLUMN -->
+            <div class="phase-column end-column">
+                <div class="step terminal">Proses Selesai</div>
+            </div>
         </div>
         
         <!-- Legend -->
